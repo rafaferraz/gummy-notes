@@ -1,16 +1,19 @@
 module.exports = {
-  darkMode: "class",
-  content: ["./src/pages/*.{html,tsx}", "./src/components/*.{html,tsx}"],
+  darkMode: 'class',
+  content: ['./src/pages/*.{js,ts,jsx,tsx}', './src/components/*.{js,ts,jsx,tsx}'],
   theme: {
+    fontFamily: {
+      serif: ['Nunito', 'serif']
+    },
     extend: {
       colors: {
-        "gm-black": "#000000",
-        "gm-dark-blue": "#150050",
-        "gm-dark-purple": "#3F0071",
-        "gm-purple": "#610094",
-        "gm-light-purple": "#8B00D5",
-      },
-    },
+        'gm-black': '#000000',
+        'gm-dark-blue': '#150050',
+        'gm-dark-purple': '#3F0071',
+        'gm-purple': '#610094',
+        'gm-light-purple': '#8B00D5'
+      }
+    }
   },
-  plugins: [],
+  plugins: []
 };
