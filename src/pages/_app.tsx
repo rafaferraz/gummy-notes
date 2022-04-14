@@ -1,7 +1,8 @@
-import "../styles/globals.css";
+import { AppProps } from 'next/app';
+import '../styles/globals.css';
 
-function MyApp({ Component, pageProps }) {
+function GummyNotes({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />;
 }
 
-export default MyApp;
+export default GummyNotes;
