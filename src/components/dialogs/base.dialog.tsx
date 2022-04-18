@@ -1,19 +1,16 @@
 type DialogProps = {
   title: string;
-  onClose?: () => void;
-  content?: React.ReactNode;
+  children: React.ReactNode;
   footer?: React.ReactNode;
 };
 
-export default function BaseDialog({ title, onClose, content, footer }: DialogProps) {
+export default function BaseDialog({ title, children, footer }: DialogProps) {
   return (
-    <div
-      className={`fixed ${
-        true ? 'block' : 'hidden'
-      } inset-0 backdrop-blur-sm overflow-y-auto h-full w-full`}>
-      <div className={`relative my-auto mx-auto px-3 py-5 shadow-lg bg-gm-dark-purple rounded-lg`}>
-        <h1 className={`text-white text-3xl text-center font-semibold`}>{title}</h1>
-        {content}
+    <div id="dialog-backdrop" className={`fixed block inset-0 backdrop-blur-sm h-full w-full`}>
+      <div
+        className={`relative mx-5 my-12 max-w-[324px] lg:w-full px-6 py-8 shadow-lg bg-gm-pink dark:bg-gm-dark-purple rounded-[2rem]`}>
+        <h1 className={`text-white tracking-wider text-3xl text-center font-semibold`}>{title}</h1>
+        {children}
         {footer}
       </div>
     </div>
