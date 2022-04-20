@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import React, { useState } from 'react';
 import BaseFormInput from '../../components/forms/base.input';
 import BaseDialog from './base.dialog';
