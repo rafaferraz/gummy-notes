@@ -47,12 +47,12 @@ function BaseFormInput({
           {label}
         </label>
       )}
-      <div className="flex flex-row justify-start cursor-text items-center outline-none rounded-lg py-1 px-2 text-white border-solid border-none border-eco-purple-accent bg-eco-grey-accent/[.12] hover:bg-eco-grey-accent/[.24]">
+      <div className="flex flex-row justify-start cursor-text items-center outline-none rounded-lg py-1 px-2 text-white border border-white bg-gm-dark-pink hover:bg-gm-darkest-pink dark:bg-gm-dark-blue dark:hover:bg-gm-purple">
         {preffixIcon}
         <input
           className={`grow outline-none ${preffixIcon ? 'pl-1' : 'pl-3'} ${
             suffixIcon ? 'pr-1' : 'pr-3'
-          } bg-transparent placeholder:font-['Nunito'] placeholder:text-lg placeholder:font-extrabold placeholder:text-white`}
+          } bg-transparent py-1 placeholder:font-['Nunito'] placeholder:text-md placeholder:font-medium placeholder:text-white/[.7]`}
           value={value}
           onChange={onChange}
           type={isObscure ? 'password' : type}
