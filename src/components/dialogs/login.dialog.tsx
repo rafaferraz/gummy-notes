@@ -32,7 +32,7 @@ export default function LoginDialog({ onClose }: LoginDialogProps) {
         <BaseFormInput
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          obscure={password ? true : false}
+          obscure={true}
           obscureIconStyle="cursor-pointer material-icons text-xl"
           placeholder={'Senha'}
           className={`text-white rounded-xl text-md`}

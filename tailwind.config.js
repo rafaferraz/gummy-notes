@@ -17,6 +17,7 @@ module.exports = {
         'gm-button-green': '#66F8A0',
         'gm-text-button-purple': '#330086',
         'gm-lm-purple': '#510091',
+        'gm-lm-grey': '#4E4E4E',
         'gm-darkest-pink': '#FF0081',
         'gm-dark-pink': '#FF48A5',
         'gm-pink': '#FF77BC',

@@ -1,6 +1,8 @@
 import Head from 'next/head';
 import { useEffect } from 'react';
 import NavigationBar from '../components/navigation.bar';
+import LeftDrawer from '../components/left.drawer';
+import ToolsBar from '../components/tools.bar';
 
 export default function HomePage() {
   useEffect(() => {
@@ -13,11 +15,15 @@ export default function HomePage() {
 
   return (
     <div
-      className={`justify-center items-center w-full min-h-screen bg-gm-light-pink dark:bg-gm-light-purple`}>
+      className={`justify-center items-center w-full min-h-screen bg-gm-lightest-pink dark:bg-gm-light-purple`}>
       <Head>
         <title>Gummy Notes</title>
       </Head>
       <NavigationBar />
+      <div className={`flex flex-row items-end`}>
+        <LeftDrawer />
+        <ToolsBar />
+      </div>
     </div>
   );
 }

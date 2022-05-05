@@ -7,6 +7,7 @@ type SignUpDialogProps = {
 };
 
 export default function SignUpDialog({ onClose }: SignUpDialogProps) {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -19,8 +20,8 @@ export default function SignUpDialog({ onClose }: SignUpDialogProps) {
       <div className={'flex flex-col gap-2 justify-center items-center'}>
         <div className={'my-2'}></div>
         <BaseFormInput
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           placeholder={'Nome'}
           className={`text-white rounded-xl text-md`}
         />
@@ -33,7 +34,7 @@ export default function SignUpDialog({ onClose }: SignUpDialogProps) {
         <BaseFormInput
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          obscure={password ? true : false}
+          obscure={true}
           obscureIconStyle="cursor-pointer material-icons text-xl"
           placeholder={'Senha'}
           className={`text-white rounded-xl text-md`}
