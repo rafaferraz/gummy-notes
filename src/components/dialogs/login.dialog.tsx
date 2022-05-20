@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import BaseDialog from '../../components/dialogs/base.dialog';
 import BaseFormInput from '../../components/forms/base.input';
+import ActionButton from '../buttons/action.button';
+import SignUpDialog from './signUp.dialog';
 
 type LoginDialogProps = {
   onClose: () => void;
 };
 
 export default function LoginDialog({ onClose }: LoginDialogProps) {
+  const [isSignUpDialogOpened, setIsSignUpDialogOpened] = useState(false);
+  //const [isLoginDialogOpened, setIsLoginDialogOpened] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -19,9 +23,14 @@ export default function LoginDialog({ onClose }: LoginDialogProps) {
       <div className={'flex flex-col gap-2 justify-center items-center'}>
         <div className={'flex flex-row gap-2 justify-center items-center mt-8 mb-4'}>
           <span className={`text-white text-sm font-medium`}>Não tem uma conta?</span>
-          <span className={`cursor-pointer text-white font-semibold tracking-wider text-sm`}>
-            Cadastre-se
-          </span>
+          <ActionButton
+            text="Cadastre-se"
+            onClick={function () {
+              //onClose();
+              //setIsLoginDialogOpened(false);
+              setIsSignUpDialogOpened(true);
+            }}
+          />
         </div>
         <BaseFormInput
           value={email}
@@ -48,6 +57,8 @@ export default function LoginDialog({ onClose }: LoginDialogProps) {
           Continuar sem uma conta
         </button>
       </div>
+      {isSignUpDialogOpened && <SignUpDialog onClose={() => setIsSignUpDialogOpened(false)} />}
+      {/* {isLoginDialogOpened && <LoginDialog onClose={() => setIsLoginDialogOpened(true)} />} */}
     </BaseDialog>
   );
 }
