@@ -27,7 +27,7 @@ export default function LeftDrawer() {
             key={index}
             className={`text-gm-lm-grey dark:text-gm-dark-blue font-extrabold bg-gm-light-pink dark:bg-gm-purple `}
             name={'board'}
-            value={`${board.name} (${board.id})`}
+            defaultValue={`${board.name} (${board.id})`}
             id={`board-${index + 1}`}
             onChange={(e) => handleChangeBoard(e, index)}></input>
         ))}
