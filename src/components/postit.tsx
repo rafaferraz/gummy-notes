@@ -1,21 +1,24 @@
-import HomePage from '../pages/index';
+import Draggable from 'react-draggable';
 
-export default function PostIt({
-  className = '',
-  onClick = () => {
-    HomePage.addPostIt();
-  }
-}: {
-  className?: string;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-}) {
+export default function PostIt() {
   return (
-    <div className={className}>
-      <div className={`drop-shadow-xl flex flex-row justify-end items-end`}>
-        <span className={`w-24 h-24 rounded-br-[20px] bg-notes-yellow`}></span>
+    <Draggable bounds="parent">
+      <div
+        className={`active:border-2 active:border-gm-pink active:rounded-br-[35px] absolute top-1/2 left-1/2 drop-shadow-xl flex flex-row justify-end items-end`}>
+        <div className={`flex flex-col items-center`}>
+          <span className={`w-56 h-56 rounded-br-[35px] bg-notes-yellow`}></span>
+          <textarea
+            className={`absolute m-2 p-1 bg-transparent text-lg font-bold resize-none focus:outline-dashed focus:outline-gm-pink`}
+            name={'note'}
+            rows={6}
+            cols={20}
+            maxLength={100}
+            autoSave={'true'}
+            placeholder={'Adicionar nota'}></textarea>
+        </div>
         <span
-          className={`w-[20px] h-[20px] rounded-br-[20px] absolute  bg-notes-dark-yellow`}></span>
+          className={`w-[35px] h-[35px] rounded-br-[35px] absolute bg-notes-dark-yellow`}></span>
       </div>
-    </div>
+    </Draggable>
   );
 }
