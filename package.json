@@ -6,9 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:reports": "npx mochawesome-merge 'cypress/reports/*.json' > mochawesome.json && npx marge mochawesome.json",
+    "cypress:open": "./node_modules/.bin/cypress open",
+    "cypress:run": "./node_modules/.bin/cypress run --spec 'cypress/integration/aula_inatel/**/'"
   },
   "dependencies": {
+    "cypress": "^10.0.1",
     "next": "12.1.5",
     "react": "18.0.0",
     "react-color": "^2.19.3",
@@ -28,6 +32,9 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
+    "mochawesome": "^7.1.3",
+    "mochawesome-merge": "^4.2.1",
+    "mochawesome-report-generator": "^6.2.0",
     "postcss": "^8.4.12",
     "prettier": "^2.6.1",
     "prisma": "^3.12.0",
