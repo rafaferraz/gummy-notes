@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test:reports": "npx mochawesome-merge 'cypress/reports/*.json' > mochawesome.json && npx marge mochawesome.json",
     "cypress:open": "./node_modules/.bin/cypress open",
-    "cypress:run": "./node_modules/.bin/cypress run --spec 'cypress/e2e/gummy-notes/**/'"
+    "cypress:run": "npx cypress run --spec 'cypress/e2e/gummy-notes/**/'",
+    "cypress:reports": "npx cypress run --spec 'cypress/e2e/gummy-notes/**/' --reporter mochawesome"
   },
   "dependencies": {
     "cypress": "^10.0.1",
