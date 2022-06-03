@@ -9,7 +9,7 @@
     "lint": "next lint",
     "test:reports": "npx mochawesome-merge 'cypress/reports/*.json' > mochawesome.json && npx marge mochawesome.json",
     "cypress:open": "./node_modules/.bin/cypress open",
-    "cypress:run": "./node_modules/.bin/cypress run --spec 'cypress/integration/aula_inatel/**/'"
+    "cypress:run": "./node_modules/.bin/cypress run --spec 'cypress/e2e/gummy-notes/**/'"
   },
   "dependencies": {
     "cypress": "^10.0.1",
