@@ -34,7 +34,7 @@ export default class Token {
     return {
       accessToken: this.accessToken,
       refreshToken: this.refreshToken,
-      createdAt: this.createdAt,
+      createdAt: this.createdAt.toUTCString(),
       userId: this.userId,
       expiresAt: this.expiresAt
     };
