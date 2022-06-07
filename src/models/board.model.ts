@@ -1,6 +1,6 @@
 import Note, { NoteProps } from './note.model';
 
-type BoardProps = {
+export type BoardProps = {
   id: string;
   title: string;
   notes: NoteProps[];
