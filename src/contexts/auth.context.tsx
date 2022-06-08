@@ -22,12 +22,10 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
   async function isAlreadyAuthenticated() {
     const token = await authRepository.readToken();
-    if (token) {
-      if (!token.isValid) {
-        const refreshedToken = await refreshAuth();
-        return refreshedToken.isValid;
-      }
-    }
+    if (!token) return false;
+    if (token.isValid) return true;
+    const refreshedToken = await refreshAuth();
+    return refreshedToken?.isValid || false;
   }
 
   async function signOut() {
