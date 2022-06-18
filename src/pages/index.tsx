@@ -1,15 +1,17 @@
+import px2vw from '../utils/px2vw';
 import Head from 'next/head';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import NavigationBar from '../components/navigation.bar';
 import LeftDrawer from '../components/left.drawer';
-import ToolsBar from '../components/tools.bar';
 import PostIt from '../components/postit';
-import Draggable from 'react-draggable';
-import { TwitterPicker } from 'react-color';
+import { CirclePicker } from 'react-color';
 
 export default function HomePage() {
   const [postIts, setPostIts] = useState([]);
+  const [showColorPicker, setShowColorPicker] = useState(false);
+  const showOrHide = () => setShowColorPicker(!showColorPicker);
+  const [color, setColor] = useState('#FBF5C5');
 
   const addPostIt = (e) => {
     e.preventDefault();
@@ -20,6 +22,10 @@ export default function HomePage() {
     postIts[index].name = e.target.value;
     postIts[index].id = index + 1;
     setPostIts([...postIts]);
+  };
+
+  const handleColorChange = (color) => {
+    setColor(color.hex);
   };
 
   useEffect(() => {
@@ -40,9 +46,10 @@ export default function HomePage() {
       <div className={`flex flex-row items-end`}>
         <LeftDrawer />
         <div className={`flex flex-col items-center w-full h-full`}>
-          <div className={`container h-[543px]`}>
+          <div className={`container w-full h-[720px]`}>
             {postIts.map((index) => (
               <PostIt
+                color={color}
                 key={index}
                 name={'postIt'}
                 id={`postIt-${index + 1}`}
@@ -51,18 +58,23 @@ export default function HomePage() {
             ))}
           </div>
           <div
-            className={`w-[700px] h-[150px] flex flex-row justify-evenly items-center mb-14 rounded-[80px] bg-gm-light-pink dark:bg-gm-purple`}>
-            <div className={`flex flex-col`}>
-              <TwitterPicker
-                className={`absolute`}
-                width={'160px'}
-                colors={['#DBBEF9', '#AFDEFA', '#BDF6E3', '#FBF5C5', '#FFC3C1']}
-                triangle={'hide'}
-              />
-              <span
-                className={`cursor-pointer material-icons text-8xl w-24 text-gm-darkest-pink dark:text-black`}>
+            className={`w-1/2 h-max py-8 flex flex-row justify-evenly items-center mb-14 rounded-[80px] bg-gm-light-pink dark:bg-gm-purple`}>
+            <div className={`flex flex-col items-center gap-2`}>
+              {showColorPicker ? (
+                <CirclePicker
+                  className={`absolute bottom-40 border-2 py-2 border-gm-darkest-pink rounded-2xl bg-gm-lightest-pink dark:bg-gm-light-purple dark:border-black flex gap-2 justify-center items-center`}
+                  circleSpacing={0}
+                  width={px2vw(128)}
+                  color={color}
+                  colors={['#DBBEF9', '#AFDEFA', '#BDF6E3', '#FBF5C5', '#FFC3C1']}
+                  onChangeComplete={handleColorChange}
+                />
+              ) : null}
+              <button
+                className={`w-32 cursor-pointer material-icons text-8xl w-24 text-gm-darkest-pink dark:text-black`}
+                onClick={showOrHide}>
                 palette
-              </span>
+              </button>
             </div>
             <div className={`cursor-pointer drop-shadow-xl flex flex-row justify-end items-end`}>
               <button
