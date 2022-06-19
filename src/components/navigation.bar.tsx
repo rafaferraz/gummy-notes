@@ -31,7 +31,7 @@ export default function NavigationBar() {
 
   return (
     <nav
-      className={`flex flex-row justify-between items-center p-2 bg-gm-dark-pink dark:bg-gm-dark-purple shadow-md`}>
+      className={`flex flex-row justify-between items-center p-2 bg-gm-dark-pink dark:bg-gm-dark-purple`}>
       <LeftSideItems>
         <NavigationItem>
           <Logo />
