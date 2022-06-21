@@ -1,15 +1,32 @@
 import Head from 'next/head';
-import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useContext, useEffect } from 'react';
 import NavigationBar from '../components/navigation.bar';
+import { AuthContext } from '../contexts/auth.context';
+import { NotesContext } from '../contexts/notes.context';
+import { UsersContext } from '../contexts/users.context';
+import { BoardsContext } from '../contexts/boards.context';
 
 export default function HomePage() {
+  const { isAuthenticated } = useContext(AuthContext);
+  const { getData } = useContext(UsersContext);
+  const { findBoardNotes, saveNote, updateAndSaveNote, removeNoteById } = useContext(NotesContext);
+  const { findUsersBoards, saveBoard, updateAndSaveBoard } = useContext(BoardsContext);
+  const router = useRouter();
+
+  async function initialize() {
+    if (isAuthenticated) {
+      const user = await getData();
+    }
+  }
+
   useEffect(() => {
-    const darkIsOnStorage = localStorage.getItem('dark') != null;
-    let isDarkModeActive = false;
-    if (darkIsOnStorage) isDarkModeActive = localStorage.getItem('dark') == 'true';
-    else localStorage.setItem('dark', 'false');
-    document.documentElement.classList.toggle('dark', isDarkModeActive);
-  });
+    initialize();
+  }, []);
+
+  useEffect(() => {
+    if (!isAuthenticated) console.log('Usuário não autenticado');
+  }, [isAuthenticated]);
 
   return (
     <div
