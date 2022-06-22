@@ -12,6 +12,7 @@
     "cypress:reports": "npx cypress run --spec 'cypress/e2e/gummy-notes/**/' --reporter mochawesome"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "cypress": "^10.0.1",
     "next": "12.1.5",
     "react": "18.0.0",

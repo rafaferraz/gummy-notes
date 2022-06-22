@@ -1,18 +1,22 @@
 import { useEffect, useState } from 'react';
 
 export default function DarkModeSwitch() {
-  const [isDarkModeActive, setIsDarkModeActive] = useState(false);
+  const [isDarkModeActive, setIsDarkModeActive] = useState<boolean>(false);
 
   function handleOnClick() {
     setIsDarkModeActive(!isDarkModeActive);
-    localStorage.setItem('dark', isDarkModeActive ? 'true' : 'false');
-    document.documentElement.classList.toggle('dark', isDarkModeActive);
+    const darkToken = localStorage.getItem('dark');
+    localStorage.setItem('dark', darkToken == 'false' ? 'true' : 'false');
+    document.documentElement.classList.toggle('dark');
   }
 
   useEffect(() => {
     const darkToken = localStorage.getItem('dark');
-    setIsDarkModeActive(darkToken != null && darkToken == 'true');
+    const isDarkModeActive = darkToken != null && darkToken == 'true';
+    setIsDarkModeActive(isDarkModeActive);
+    document.documentElement.classList.toggle('dark', isDarkModeActive);
   }, []);
+
   return (
     <button onClick={handleOnClick}>
       <div
@@ -21,7 +25,7 @@ export default function DarkModeSwitch() {
         <span className={'material-icons text-[#f39c12]'}>light_mode</span>
         <div
           className={`bg-white rounded-full absolute t-[2px] l-[2px] h-[16px] w-[16px] transition-transform duration-200 ease-linear ${
-            isDarkModeActive ? 'translate-x-0' : 'translate-x-[20px]'
+            isDarkModeActive ? 'translate-x-[20px]' : 'translate-x-0'
           }`}></div>
       </div>
     </button>

@@ -1,34 +1,49 @@
 import Head from 'next/head';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useState } from 'react';
 import NavigationBar from '../components/navigation.bar';
 import LeftDrawer from '../components/left.drawer';
 import ToolsBar from '../components/tools.bar';
 import PostIt from '../components/postit';
-import Draggable from 'react-draggable';
 import { TwitterPicker } from 'react-color';
+import { AuthContext } from '../contexts/auth.context';
+import { UsersContext } from '../contexts/users.context';
+import { NotesContext } from '../contexts/notes.context';
+import { BoardsContext } from '../contexts/boards.context';
+import { useRouter } from 'next/router';
 
 export default function HomePage() {
-  const [postIts, setPostIts] = useState([]);
+  const [postIts, setPostIts] = useState<any>([]);
+  const { isAuthenticated } = useContext(AuthContext);
+  const { getData } = useContext(UsersContext);
+  const { findBoardNotes, saveNote, updateAndSaveNote, removeNoteById } = useContext(NotesContext);
+  const { findUsersBoards, saveBoard, updateAndSaveBoard } = useContext(BoardsContext);
+  const router = useRouter();
 
-  const addPostIt = (e) => {
+  async function initialize() {
+    if (isAuthenticated) {
+      const user = await getData();
+    }
+  }
+
+  useEffect(() => {
+    initialize();
+  }, []);
+
+  const addPostIt = (e: any) => {
     e.preventDefault();
     setPostIts([...postIts, { name: 'Novo Postit', id: postIts.length + 1 }]);
   };
 
-  const handleChangePostIt = (e, index) => {
+  const handleChangePostIt = (e: any, index: number) => {
     postIts[index].name = e.target.value;
     postIts[index].id = index + 1;
     setPostIts([...postIts]);
   };
 
   useEffect(() => {
-    const darkIsOnStorage = localStorage.getItem('dark') != null;
-    let isDarkModeActive = false;
-    if (darkIsOnStorage) isDarkModeActive = localStorage.getItem('dark') == 'true';
-    else localStorage.setItem('dark', 'false');
-    document.documentElement.classList.toggle('dark', isDarkModeActive);
-  });
+    if (!isAuthenticated) console.log('Usuário não autenticado');
+  }, [isAuthenticated]);
 
   return (
     <div
@@ -41,13 +56,8 @@ export default function HomePage() {
         <LeftDrawer />
         <div className={`flex flex-col items-center w-full h-full`}>
           <div className={`container h-[543px]`}>
-            {postIts.map((index) => (
-              <PostIt
-                key={index}
-                name={'postIt'}
-                id={`postIt-${index + 1}`}
-                onChange={(e) => handleChangePostIt(e, index)}
-              />
+            {postIts.map((index: number) => (
+              <PostIt key={index} />
             ))}
           </div>
           <div
