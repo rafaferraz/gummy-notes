@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import BaseDialog from '../../components/dialogs/base.dialog';
 import BaseFormInput from '../../components/forms/base.input';
 import ActionButton from '../buttons/action.button';
 import SignUpDialog from './signUp.dialog';
+import { AuthContext } from '../../contexts/auth.context';
 
 type LoginDialogProps = {
   onClose: () => void;
@@ -10,12 +11,16 @@ type LoginDialogProps = {
 
 export default function LoginDialog({ onClose }: LoginDialogProps) {
   const [isSignUpDialogOpened, setIsSignUpDialogOpened] = useState(false);
-  //const [isLoginDialogOpened, setIsLoginDialogOpened] = useState(true);
+  const { auth } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  function onSubmit() {
-    console.log(`Form submitted with email: ${email}`);
+  async function onSubmit(e: any) {
+    e.preventDefault();
+    await auth({
+      email,
+      password
+    });
   }
 
   return (
