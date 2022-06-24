@@ -34,9 +34,9 @@ describe('Main page integration test', () => {
     cy.get('#dialog-backdrop').should('not.exist');
   });
 
-  it('Add new note to the current board', () => {
-    cy.get('.w-56').should('not.exist');
-    cy.get('.drop-shadow-xl > .w-24').click();
-    cy.get('.w-56').should('exist');
+  it('Expand left drawer', () => {
+    cy.get('.min-w-\\[40px\\]').should('have.css', 'width', '40px');
+    cy.get('.hover\\:bg-white\\/\\[\\.2\\] > .self-center').click();
+    cy.get('.min-w-\\[40px\\]').should('have.css', 'width', '220.125px');
   });
 });
