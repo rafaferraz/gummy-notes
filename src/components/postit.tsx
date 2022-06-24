@@ -1,12 +1,7 @@
 import Draggable from 'react-draggable';
 import { useState } from 'react';
 
-interface PostItProps extends React.HTMLAttributes<HTMLDivElement> {
-  color: string;
-  name: string;
-}
-
-export default function PostIt({ color = '#FBF5C5' }: PostItProps) {
+export default function PostIt({ color = '#FBF5C5' }: { color: string }) {
   const [showTools, setShowTools] = useState(false);
   const [disabledTextArea, setDisabledTextArea] = useState(true);
   let actualColor = 'notes-yellow';

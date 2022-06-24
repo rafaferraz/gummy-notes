@@ -1,7 +1,5 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import BaseFormInput from '../../components/forms/base.input';
-import { AuthContext } from '../../contexts/auth.context';
-import { UsersContext } from '../../contexts/users.context';
 import BaseDialog from './base.dialog';
 
 type SignUpDialogProps = {
@@ -9,23 +7,12 @@ type SignUpDialogProps = {
 };
 
 export default function SignUpDialog({ onClose }: SignUpDialogProps) {
-  const { signUp } = useContext(UsersContext);
-  const { auth } = useContext(AuthContext);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  async function onSubmit() {
-    const user = await signUp({
-      name,
-      email,
-      password
-    });
-    if (user)
-      await auth({
-        email,
-        password
-      });
+  function onSubmit() {
+    console.log(`Form submitted with email: ${email}`);
   }
 
   const html = (

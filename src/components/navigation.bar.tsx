@@ -1,10 +1,6 @@
-import { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../contexts/auth.context';
-import { UsersContext } from '../contexts/users.context';
-import User from '../models/user.model';
+import { useState } from 'react';
 import ActionButton from './buttons/action.button';
 import DrawerButton from './buttons/drawer.button';
-import { Span } from './common/span';
 import DarkModeSwitch from './darkMode.switch';
 import LoginDialog from './dialogs/login.dialog';
 import SignUpDialog from './dialogs/signUp.dialog';
@@ -29,30 +25,13 @@ const RightSideItems = ({ children }: SideItemsProps) => {
 };
 
 export default function NavigationBar() {
-  const { isAuthenticated, signOut } = useContext(AuthContext);
-  const { getData } = useContext(UsersContext);
-  const [user, setUser] = useState<User>();
   const [isLoginDialogOpened, setIsLoginDialogOpened] = useState(false);
   const [isSignUpDialogOpened, setIsSignUpDialogOpened] = useState(false);
   const [isDrawerOpened, setIsDrawerOpened] = useState(false);
 
-  async function getUser() {
-    const user = await getData();
-    if (user) setUser(user);
-  }
-
-  async function logout() {
-    const success = await signOut();
-  }
-
-  useEffect(() => {
-    if (isAuthenticated) getUser();
-    else setUser(undefined);
-  }, [isAuthenticated]);
-
   return (
     <nav
-      className={`flex flex-row justify-between items-center w-full p-2 bg-gm-dark-pink dark:bg-gm-dark-purple`}>
+      className={`flex flex-row justify-between items-center p-2 bg-gm-dark-pink dark:bg-gm-dark-purple`}>
       <LeftSideItems>
         <NavigationItem>
           <Logo />
@@ -62,8 +41,8 @@ export default function NavigationBar() {
         <NavigationItem>
           <DarkModeSwitch />
         </NavigationItem>
-        {!user && (
-          <div className="flex flex-row gap-4">
+        <>
+          <div className="hidden md:flex flex-row">
             <NavigationItem>
               <ActionButton text="Entrar" onClick={() => setIsLoginDialogOpened(true)} />
             </NavigationItem>
@@ -71,19 +50,12 @@ export default function NavigationBar() {
               <ActionButton text="Cadastrar" onClick={() => setIsSignUpDialogOpened(true)} />
             </NavigationItem>
           </div>
-        )}
-        {user && (
-          <div className="flex flex-row gap-4">
+          <div className="block md:hidden">
             <NavigationItem>
-              <Span className="px-1 py-0.5 text-white text-md font-semibold tracking-wider text-center">
-                {user.name}
-              </Span>
-            </NavigationItem>
-            <NavigationItem>
-              <ActionButton text="Sair" onClick={logout} />
+              <DrawerButton onClick={() => setIsDrawerOpened(!isDrawerOpened)} />
             </NavigationItem>
           </div>
-        )}
+        </>
       </RightSideItems>
       {isLoginDialogOpened && <LoginDialog onClose={() => setIsLoginDialogOpened(false)} />}
       {isSignUpDialogOpened && <SignUpDialog onClose={() => setIsSignUpDialogOpened(false)} />}
