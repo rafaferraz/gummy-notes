@@ -3,7 +3,11 @@ import DependenciesContainer from '../dependencies.container';
 import User from '../models/user.model';
 
 type UsersContextData = {
-  signUp: (credentials: { email: string; password: string }) => Promise<User | undefined>;
+  signUp: (credentials: {
+    email: string;
+    password: string;
+    name: string;
+  }) => Promise<User | undefined>;
   getData: () => Promise<User | undefined>;
 };
 
@@ -19,10 +23,19 @@ export const UsersContext = createContext<UsersContextData>({
 export default function UsersProvider({ children }: UsersProviderProps) {
   const usersRepository = DependenciesContainer.instance.usersRepository;
 
-  async function signUp({ email, password }: { email: string; password: string }) {
+  async function signUp({
+    email,
+    password,
+    name
+  }: {
+    email: string;
+    password: string;
+    name: string;
+  }) {
     const result = await usersRepository.create({
       email: email,
-      password: password
+      password: password,
+      name: name
     });
     return result;
   }

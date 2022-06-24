@@ -39,7 +39,9 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function signOut() {
-    return await authRepository.logout();
+    const isTokenOutOfStorage = await authRepository.logout();
+    setIsAuthenticated(!isTokenOutOfStorage);
+    return isTokenOutOfStorage;
   }
 
   async function auth({ email, password }: { email: string; password: string }) {

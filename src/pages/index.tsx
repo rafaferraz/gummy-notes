@@ -5,34 +5,83 @@ import { useState } from 'react';
 import NavigationBar from '../components/navigation.bar';
 import LeftDrawer from '../components/left.drawer';
 import PostIt from '../components/postit';
-import { TwitterPicker } from 'react-color';
+import { ColorResult, TwitterPicker } from 'react-color';
 import { AuthContext } from '../contexts/auth.context';
 import { UsersContext } from '../contexts/users.context';
 import { NotesContext } from '../contexts/notes.context';
 import { BoardsContext } from '../contexts/boards.context';
 import { useRouter } from 'next/router';
 import { CirclePicker } from 'react-color';
+import { Container } from '../components/common/container';
+import Board from '../models/board.model';
+import { BoardContainer } from '../components/board/board';
+import User from '../models/user.model';
+
+enum PageState {
+  LOADING = 'LOADING',
+  LOADED = 'LOADED',
+  ERROR = 'ERROR'
+}
 
 export default function HomePage() {
+  const [pageState, setPageState] = useState<PageState>(PageState.LOADING);
+  const [user, setUser] = useState<User>();
+  const [boards, setBoards] = useState<Board[]>([]);
+  const [selectedBoard, setSelectedBoard] = useState<Board>();
   const [postIts, setPostIts] = useState<any>([]);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const showOrHide = () => setShowColorPicker(!showColorPicker);
   const [color, setColor] = useState('#FBF5C5');
   const { isAuthenticated } = useContext(AuthContext);
   const { getData } = useContext(UsersContext);
-  const { findBoardNotes, saveNote, updateAndSaveNote, removeNoteById } = useContext(NotesContext);
-  const { findUsersBoards, saveBoard, updateAndSaveBoard } = useContext(BoardsContext);
+  const { findUsersBoards, saveBoard, updateAndSaveBoard, removeBoardById } =
+    useContext(BoardsContext);
   const router = useRouter();
 
   async function initialize() {
+    setPageState(PageState.LOADING);
     if (isAuthenticated) {
       const user = await getData();
+      if (!user) {
+        setPageState(PageState.ERROR);
+        console.log('Error: user not found');
+        return;
+      }
+      setUser(user);
+      const boards = await findUsersBoards();
+      if (!boards || boards.length == 0) addNewBoard();
+      else setBoards(boards);
     }
+    if (!isAuthenticated) {
+      setBoards([]);
+    }
+    setPageState(PageState.LOADED);
   }
 
   useEffect(() => {
     initialize();
-  }, []);
+  }, [isAuthenticated]);
+
+  async function addNewBoard() {
+    if (!user) return;
+    const board = new Board();
+    board.userId = user.id;
+    const savedBoard = await saveBoard(board);
+    if (savedBoard) setBoards([...boards, savedBoard]);
+  }
+
+  async function removeBoard(boardToRemove: Board) {
+    await removeBoardById(boardToRemove.id);
+    if (selectedBoard && boardToRemove.id == selectedBoard.id) setSelectedBoard(undefined);
+    setBoards(boards.filter((board) => board.id != boardToRemove.id));
+  }
+
+  async function renameBoard(renamedBoard: Board): Promise<boolean> {
+    const savedBoard = await updateAndSaveBoard(renamedBoard);
+    if (savedBoard)
+      setBoards(boards.map((board) => (board.id == savedBoard.id ? savedBoard : board)));
+    return savedBoard != undefined;
+  }
 
   const addPostIt = (e: any) => {
     e.preventDefault();
@@ -45,68 +94,30 @@ export default function HomePage() {
     setPostIts([...postIts]);
   };
 
-  const handleColorChange = (color) => {
+  const handleColorChange = (color: ColorResult) => {
     setColor(color.hex);
   };
 
-  useEffect(() => {
-    if (!isAuthenticated) console.log('Usuário não autenticado');
-  }, [isAuthenticated]);
-
   return (
-    <div
-      className={`justify-center items-center w-full min-h-screen bg-gm-lightest-pink dark:bg-gm-light-purple`}>
+    <Container className="min-w-screen min-h-screen">
       <Head>
         <title>Gummy Notes</title>
       </Head>
-      <NavigationBar />
-      <div className={`flex flex-row items-end`}>
-        <LeftDrawer />
-        <div className={`flex flex-col items-center w-full h-full`}>
-          <div className={`container w-full h-[720px]`}>
-            {postIts.map((index: number) => (
-              <PostIt
-                color={color}
-                key={index}
-                name={'postIt'}
-                id={`postIt-${index + 1}`}
-                onChange={(e: any) => handleChangePostIt(e, index)}
-              />
-            ))}
-          </div>
-          <div
-            className={`w-1/2 h-max py-8 flex flex-row justify-evenly items-center mb-14 rounded-[80px] bg-gm-light-pink dark:bg-gm-purple`}>
-            <div className={`flex flex-col items-center gap-2`}>
-              {showColorPicker ? (
-                <CirclePicker
-                  className={`absolute bottom-40 border-2 py-2 border-gm-darkest-pink rounded-2xl bg-gm-lightest-pink dark:bg-gm-light-purple dark:border-black flex gap-2 justify-center items-center`}
-                  circleSpacing={0}
-                  width={px2vw(128)}
-                  color={color}
-                  colors={['#DBBEF9', '#AFDEFA', '#BDF6E3', '#FBF5C5', '#FFC3C1']}
-                  onChangeComplete={handleColorChange}
-                />
-              ) : null}
-              <button
-                className={`w-32 cursor-pointer material-icons text-8xl w-24 text-gm-darkest-pink dark:text-black`}
-                onClick={showOrHide}>
-                palette
-              </button>
-            </div>
-            <div className={`cursor-pointer drop-shadow-xl flex flex-row justify-end items-end`}>
-              <button
-                className={`w-24 h-24 rounded-br-[20px] bg-notes-yellow`}
-                onClick={addPostIt}></button>
-              <span
-                className={`w-[20px] h-[20px] rounded-br-[20px] absolute bg-notes-dark-yellow`}></span>
-            </div>
-            <span
-              className={`cursor-pointer material-icons text-8xl text-gm-darkest-pink dark:text-black`}>
-              mood
-            </span>
-          </div>
+      <div
+        className={`flex flex-col justify-start w-full min-h-screen bg-gm-lightest-pink dark:bg-gm-light-purple`}>
+        <NavigationBar />
+        <div className={`flex flex-row grow`}>
+          <LeftDrawer
+            boards={boards}
+            selectedBoard={selectedBoard}
+            onBoardSelected={(boardSelected: Board) => setSelectedBoard(boardSelected)}
+            onAddBoard={addNewBoard}
+            onBoardRemoved={removeBoard}
+            onRenamedBoard={renameBoard}
+          />
+          <BoardContainer />
         </div>
       </div>
-    </div>
+    </Container>
   );
 }

@@ -17,10 +17,11 @@ export default function LoginDialog({ onClose }: LoginDialogProps) {
 
   async function onSubmit(e: any) {
     e.preventDefault();
-    await auth({
+    const authenticated = await auth({
       email,
       password
     });
+    console.log('authenticated', authenticated);
   }
 
   return (

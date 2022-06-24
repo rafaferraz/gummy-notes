@@ -10,14 +10,7 @@ export default class ServerUsersRepository implements IUsersRepository {
 
   async create(credentials: CreateUserDto): Promise<User | undefined> {
     try {
-      const tokenOnStorage = localStorage.getItem('token');
-      if (!tokenOnStorage) return;
-      const token = Token.fromJson(JSON.parse(tokenOnStorage));
-      const result = await this._httpClient.post<UserProps>(`/users`, credentials, {
-        headers: {
-          Authorization: `Bearer ${token.accessToken}`
-        }
-      });
+      const result = await this._httpClient.post<UserProps>(`/users`, credentials);
       const user = User.fromJson(result.data);
       return user;
     } catch (e) {

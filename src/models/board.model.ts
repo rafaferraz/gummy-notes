@@ -1,3 +1,4 @@
+import DatesFormatter, { DateFormats } from '../utils/date.util';
 import Note, { NoteProps } from './note.model';
 
 export type BoardProps = {
@@ -10,8 +11,9 @@ export type BoardProps = {
 };
 
 export default class Board {
+  static defaultTitle = `Quadro de ${DatesFormatter.format(new Date(), DateFormats.ddMMyyyy)}`;
   id = '';
-  title = '';
+  title = Board.defaultTitle;
   notes: Note[] = [];
   userId = '';
   createdAt: Date = new Date();
